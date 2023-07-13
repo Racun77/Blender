@@ -1,0 +1,42 @@
+import bpy
+import random
+
+# Number of objects
+num_objects = 10
+
+# Create the random sculpture
+for i in range(num_objects):
+    # Generate a random position
+    x = random.uniform(-5, 5)
+    y = random.uniform(-5, 5)
+    z = random.uniform(0, 5)
+    location = (x, y, z)
+
+    # Generate a random scale
+    scale_x = random.uniform(0.5, 2)
+    scale_y = random.uniform(0.5, 2)
+    scale_z = random.uniform(0.5, 2)
+    scale = (scale_x, scale_y, scale_z)
+
+    # Generate a random object
+    object_type = random.choice(['cube', 'sphere', 'cylinder', 'cone'])
+    if object_type == 'cube':
+        bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+        obj = bpy.context.active_object
+    elif object_type == 'sphere':
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=location)
+        obj = bpy.context.active_object
+    elif object_type == 'cylinder':
+        bpy.ops.mesh.primitive_cylinder_add(radius=1, depth=2, location=location)
+        obj = bpy.context.active_object
+    elif object_type == 'cone':
+        bpy.ops.mesh.primitive_cone_add(vertices=4, radius1=1, depth=2, location=location)
+        obj = bpy.context.active_object
+
+    # Apply the scale
+    obj.scale = scale
+
+    # Generate a random material color
+    material = bpy.data.materials.new(name=f"Material_{i}")
+    material.diffuse_color = (random.random(), random.random(), random.random(), 1)
+    obj.data.materials.append(material)
